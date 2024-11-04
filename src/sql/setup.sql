@@ -1,11 +1,10 @@
-CREATE DATABSE `biome-db`;
+CREATE DATABASE `biome-db`;
 
 USE `biome-db`;
 
 CREATE USER 'biome-user' @'localhost' IDENTIFIED BY 'biome-password';
 
-GRANT ALL PRIVILEGES ON `biome-db`.* TO
-'biome-user'@'localhost';
+GRANT ALL PRIVILEGES ON `biome-db`.* TO 'biome-user'@'localhost';
 
 -- Création de la table User
 CREATE TABLE User

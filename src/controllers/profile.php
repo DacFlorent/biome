@@ -93,24 +93,76 @@ class User
         }
     }
 
+    public function addUser($pseudo) {
+        try {
+            // Obtenir la connexion à la base de données
+            $pdo = getDBConnection();
+
+            // Préparer la requête SQL pour insérer un nouvel utilisateur
+            $sql = "INSERT INTO User (pseudo) VALUES (:pseudo)";
+            $stmt = $pdo->prepare($sql);
+
+            // Exécuter la requête avec le paramètre
+            $result = $stmt->execute([':pseudo' => $pseudo]);
+
+            // Vérifier si l'insertion a réussi
+            if ($result) {
+                // Récupérer l'ID de l'utilisateur ajouté
+                $userId = $pdo->lastInsertId();
+
+                // Récupérer les informations de l'utilisateur ajouté pour confirmation
+                $sql = "SELECT * FROM User WHERE ID = :userId";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([':userId' => $userId]);
+                $newUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                // Vérifier si l'utilisateur a bien été récupéré
+                if ($newUser) {
+                    // Vous pouvez retourner les détails de l'utilisateur ou un message de succès
+                    return $newUser; // Retourne les détails de l'utilisateur ajouté
+                }
+            }
+
+            return false; // Indique que l'ajout a échoué
+        } catch (PDOException $e) {
+            throw new Exception("Failed to add user: " . $e->getMessage());
+        }
+    }
+
     // ======================= //
     // ===== Update methods ===== //
     // ======================= //
 
-    public function updatePseudo($pseudo)
-    {
+    public function updatePseudo($pseudo) {
         try {
+            // Obtenir la connexion à la base de données
+            $pdo = getDBConnection();
+
+            // Utiliser un ID fixe pour l'utilisateur
+            $userId = 1; // Remplacez par l'ID que vous souhaitez utiliser
+
+            // Préparer la requête SQL pour mettre à jour le pseudo
             $sql = "UPDATE User SET pseudo = :pseudo WHERE ID = :userId";
-            Database::queryAssoc($sql, [
-                ':userId' => $this->ID,
+            $stmt = $pdo->prepare($sql);
+
+            // Exécuter la requête avec les paramètres
+            $result = $stmt->execute([
+                ':userId' => $userId,
                 ':pseudo' => $pseudo
             ]);
-            // Update the current instance of object
-            $this->pseudo = $pseudo;
+
+            // Vérifier si la mise à jour a réussi
+            if ($result) {
+                $this->pseudo = $pseudo;
+                return true; // Indiquer que la mise à jour a réussi
+            }
+
+            return false; // Indiquer que la mise à jour a échoué
         } catch (PDOException $e) {
-            throw new Error("Failed to update pseudo: " . $e->getMessage());
+            throw new Exception("Failed to update pseudo: " . $e->getMessage());
         }
     }
+
 
     public function updatePassword($passwordHash)
     {

@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b95a4c9-2d05-4553-9f9b-b493647a1e08" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/profile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Biome.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Biome.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/profile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sql/fixtures.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/fixtures.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/profile.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +79,7 @@
       <updated>1730795949733</updated>
       <workItem from="1730795951305" duration="7207000" />
       <workItem from="1730807932077" duration="3000" />
-      <workItem from="1730807948422" duration="3812000" />
+      <workItem from="1730807948422" duration="7097000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />

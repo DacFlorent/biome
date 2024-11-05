@@ -9,7 +9,8 @@
 </head>
 <body>
   <h1 class="text-3xl font-bold underline text-yellow-600">
-    Hello world!
+    Hello world
   </h1>
+  <a href="src/views/profile.php">Profile</a>
 </body>
 </html>

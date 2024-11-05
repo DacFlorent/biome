@@ -1,4 +1,4 @@
-INSERT INTO `User` (`ID`, `pseudo`, `CreatedAt`, `Points`, `Role`)
+INSERT INTO `User` (`ID`, `pseudo`, `CreatedAt`, `Points`, `Role`, `passwordHash`)
 VALUES
 
 

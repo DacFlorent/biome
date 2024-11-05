@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_users'])) {
             // Message de succès
             $notification = [
                 "title" => "infoAdded",
-                "message" => "Utilisateur ajouté avec succès : " . htmlspecialchars($newUser['pseudo'])
+                "message" => "Utilisateur ajouté avec succès"
             ];
         } else {
             // Message d'erreur
@@ -52,11 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_users'])) {
         ];
     }
 }
-
-
-
-// Inclure la vue avec la variable $pseudo
 ?>
+
+
 <div class="h-full flex flex-row-to-col gap-2">
     <div class="flex flex-col gap-2">
         <h1>Ajoute un utilisateur</h1>
@@ -66,7 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_users'])) {
         </form>
     </div>
 </div>
-
+<?php if (isset($notification)): ?>
+    <p class="<?= $notification['title'] === 'infoError' ? 'text-danger' : 'text-success' ?>">
+        <?= htmlspecialchars($notification['message']) ?>
+    </p>
+<?php endif; ?>
 
 </div>
 <div class="h-full flex flex-row-to-col gap-2">

@@ -163,6 +163,27 @@ class User
         }
     }
 
+    public function getAllUsers() {
+        try {
+            // Obtenir la connexion à la base de données
+            $pdo = getDBConnection(); // Assurez-vous que cette fonction est définie quelque part
+
+            // Préparer la requête SQL pour obtenir tous les utilisateurs
+            $sql = "SELECT * FROM User"; // Remplacez 'User' par le nom de votre table d'utilisateurs
+            $stmt = $pdo->prepare($sql);
+
+            // Exécuter la requête
+            $stmt->execute();
+
+            // Récupérer tous les résultats
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $users; // Retourner la liste des utilisateurs
+        } catch (PDOException $e) {
+            throw new Exception("Failed to retrieve users: " . $e->getMessage());
+        }
+    }
+
 
     public function updatePassword($passwordHash)
     {

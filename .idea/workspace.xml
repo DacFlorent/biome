@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b95a4c9-2d05-4553-9f9b-b493647a1e08" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/profile.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/profile.php" afterDir="false" />
     </list>

@@ -75,23 +75,31 @@ class User
     public function getAllPseudo()
     {
         try {
-            $sql = "SELECT pseudo FROM User WHERE pseudo NOT LIKE 'anonymized-%'";
-            $query = Database::queryAssoc($sql);
-            // If no result, return null
-            if (is_null($query)) {
-                return null;
+            // Obtenir la connexion à la base de données
+            $pdo = getDBConnection();
+
+            // Préparer la requête SQL pour sélectionner tous les pseudos
+            $sql = "SELECT pseudo FROM User";
+            $stmt = $pdo->prepare($sql);
+
+            // Exécuter la requête
+            $stmt->execute();
+
+            // Récupérer tous les pseudos dans un tableau associatif
+            $pseudoList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Vérifier si des pseudos ont été récupérés
+            if ($pseudoList) {
+                // Extraire les pseudos du tableau associatif
+                return array_column($pseudoList, 'pseudo'); // Retourne uniquement les pseudos
             }
-            // Extract the username from the associative array
-            $pseudoList = [];
-            foreach ($query as $user) {
-                $pseudoList[] = $user['pseudo'];
-            }
-            // Return instance object
-            return $pseudoList;
+
+            return null; // Aucune donnée trouvée
         } catch (PDOException $e) {
-            throw new Error("getAllUsername");
+            throw new Exception("Failed to retrieve pseudos: " . $e->getMessage());
         }
     }
+
 
     public function addUser($pseudo) {
         try {

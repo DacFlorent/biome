@@ -2,6 +2,12 @@
 require_once "../controllers/profile.php";
 $pseudo = null;
 $user = new User();
+$pseudos = [];
+
+if (isset($_POST['fetch_pseudo'])) {
+    // Récupérer tous les pseudos
+    $pseudos = $user->getAllPseudo();
+}
 // Vérifier si le bouton a été cliqué
 if (isset($_POST['fetch_pseudo'])) {
     $pseudo = $user->getFirstUserPseudo();
@@ -82,6 +88,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_users'])) {
         <?php if ($pseudo !== null): ?>
             <p>Premier pseudo : <?= htmlspecialchars($pseudo) ?></p>
         <?php endif; ?>
+
+        <h3 class="bold">Liste de tous les pseudos</h3>
+        <ul>
+            <?php if (!empty($pseudos)): ?>
+                <?php foreach ($pseudos as $pseudonym): ?>
+                    <li><?= htmlspecialchars($pseudonym) ?></li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li>Aucun pseudo trouvé.</li>
+            <?php endif; ?>
+        </ul>
 
         <h3 class="bold">Mettre à jour vos informations</h3>
         <form action="" method="post" class="flex flex-column gap-2">

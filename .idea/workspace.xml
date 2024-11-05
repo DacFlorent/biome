@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b95a4c9-2d05-4553-9f9b-b493647a1e08" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/controllers/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/profile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/profile.php" afterDir="false" />
-    </list>
+    <list default="true" id="9b95a4c9-2d05-4553-9f9b-b493647a1e08" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

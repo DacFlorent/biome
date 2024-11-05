@@ -1,12 +1,19 @@
 <?php
 // config.php
 
-// Configuration de la base de données
+// Charger l'autoload de Composer pour utiliser phpdotenv
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+// Charger les variables d'environnement depuis le fichier .env
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
+
+// Configuration de la base de données en utilisant les variables d'environnement
 $dbConfig = [
-    'host' => 'localhost',
-    'dbname' => 'nom_de_la_base',
-    'user' => 'utilisateur',
-    'pass' => 'mot_de_passe',
+    'host' => $_ENV['DB_HOST'],
+    'dbname' => $_ENV['DB_NAME'],
+    'user' => $_ENV['DB_USER'],
+    'pass' => $_ENV['DB_PASS'],
 ];
 
 /**

@@ -246,9 +246,21 @@ if (isset($_POST['fetch_pseudo'])) {
 
 
 </div>
+<?php
+// Connexion à la base de données
+$pdo = getDBConnection();
+
+// Requête pour récupérer les pseudos
+$sql = "SELECT pseudo FROM User";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+
+// Récupérer les résultats sous forme de tableau
+$pseudoList = $stmt->fetchAll(PDO::FETCH_COLUMN); // Récupère seulement la colonne 'pseudo'
+?>
 <div>
     <h3 class="bold mb-1">Rechercher un utilisateur</h3>
-    <form name="searchUser" class="rounded-box flex flex-column gap-Z " autocomplete="off"  aria-label="Formulaire de recherche d'utilisateur">
+    <form name="searchUser" class="rounded-box flex flex-column gap-Z" autocomplete="off" aria-label="Formulaire de recherche d'utilisateur">
         <div class="flex flex-column gap-1">
             <label for="searchUserInput">Rechercher un utilisateur</label>
             <input
@@ -258,51 +270,58 @@ if (isset($_POST['fetch_pseudo'])) {
                     placeholder="Pseudo de l'utilisateur"
                     required
                     aria-label="Rechercher un utilisateur"
-                    onkeyup="autocompleteUser()" />
+                    onkeyup="autocompleteUser()"
+                    list="datalist" />
 
             <!-- Liste déroulante dynamique des résultats -->
+            <datalist id="datalist">
+                <?php foreach ($pseudoList as $pseudo) : ?>
+                    <option value="<?= htmlspecialchars($pseudo); ?>"></option>
+                <?php endforeach; ?>
+            </datalist>
+
             <ul id="autocompleteResults" class="autocomplete-results"></ul>
         </div>
     </form>
 </div>
 
-<script>
-    function autocompleteUser() {
-        var input = document.getElementById('searchUserInput').value;
-        var resultsList = document.getElementById('autocompleteResults');
-
-        // Si l'input est vide, vider les suggestions
-        if (input.length === 0) {
-            resultsList.innerHTML = '';
-            return;
-        }
-
-        // Créer une requête AJAX pour récupérer les pseudos
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'profile.php', true); // Remplace par le chemin de ton script PHP
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        // Gérer la réponse du serveur
-        xhr.onload = function() {
-            if (xhr.status == 200) {
-                var pseudos = JSON.parse(xhr.responseText); // Supposons que ton PHP renvoie un tableau JSON
-
-                // Vider les résultats précédents
-                resultsList.innerHTML = '';
-
-                // Ajouter les nouveaux résultats
-                pseudos.forEach(function(pseudo) {
-                    var li = document.createElement('li');
-                    li.textContent = pseudo;
-                    resultsList.appendChild(li);
-                });
-            }
-        };
-
-        // Envoyer la requête
-        xhr.send('fetch_pseudo=' + encodeURIComponent(input));
-    }
-</script>
+<!--<script>-->
+<!--    function autocompleteUser() {-->
+<!--        var input = document.getElementById('searchUserInput').value;-->
+<!--        var resultsList = document.getElementById('autocompleteResults');-->
+<!---->
+<!--        // Si l'input est vide, vider les suggestions-->
+<!--        if (input.length === 0) {-->
+<!--            resultsList.innerHTML = '';-->
+<!--            return;-->
+<!--        }-->
+<!---->
+<!--        // Créer une requête AJAX pour récupérer les pseudos-->
+<!--        var xhr = new XMLHttpRequest();-->
+<!--        xhr.open('POST', 'profile.php', true); // Remplace par le chemin de ton script PHP-->
+<!--        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');-->
+<!---->
+<!--        // Gérer la réponse du serveur-->
+<!--        xhr.onload = function() {-->
+<!--            if (xhr.status == 200) {-->
+<!--                var pseudos = JSON.parse(xhr.responseText); // Supposons que ton PHP renvoie un tableau JSON-->
+<!---->
+<!--                // Vider les résultats précédents-->
+<!--                resultsList.innerHTML = '';-->
+<!---->
+<!--                // Ajouter les nouveaux résultats-->
+<!--                pseudos.forEach(function(pseudo) {-->
+<!--                    var li = document.createElement('li');-->
+<!--                    li.textContent = pseudo;-->
+<!--                    resultsList.appendChild(li);-->
+<!--                });-->
+<!--            }-->
+<!--        };-->
+<!---->
+<!--        // Envoyer la requête-->
+<!--        xhr.send('fetch_pseudo=' + encodeURIComponent(input));-->
+<!--    }-->
+<!--</script>-->
 
 <!---->
 

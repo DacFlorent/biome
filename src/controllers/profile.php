@@ -2,7 +2,7 @@
 // Login controller
 require_once "../config/config.php";
 $user = new user();
-//$pseudoList = $user->getAllPseudo();
+
 
 // Set notification
 $notification = null;
@@ -100,40 +100,69 @@ class User
         }
     }
 
+    // ======================= //
+    // ===== Add & Delete users methods ===== //
+    // ======================= //
 
-    public function addUser($pseudo) {
+//    public function addUser($pseudo) {
+//        try {
+//            // Obtenir la connexion à la base de données
+//            $pdo = getDBConnection();
+//
+//            // Vérifier si le pseudo existe déjà dans la base de données
+//            $sql = "SELECT * FROM User WHERE pseudo = :pseudo";
+//            $stmt = $pdo->prepare($sql);
+//            $stmt->execute([':pseudo' => $pseudo]);
+//            $existingUser = $stmt->fetch(PDO::FETCH_ASSOC);
+//
+//            // Si le pseudo existe déjà, retourner un message ou une valeur pour indiquer un doublon
+//            if ($existingUser) {
+//                return ["error" => "Ce pseudo est déjà pris."];
+//            }
+//
+//            // Préparer la requête SQL pour insérer un nouvel utilisateur
+//            $sql = "INSERT INTO User (pseudo) VALUES (:pseudo)";
+//            $stmt = $pdo->prepare($sql);
+//
+//            // Exécuter la requête avec le paramètre
+//            $result = $stmt->execute([':pseudo' => $pseudo]);
+//
+//            // Vérifier si l'insertion a réussi
+//            if ($result) {
+//                // Récupérer l'ID de l'utilisateur ajouté
+//                $userId = $pdo->lastInsertId();
+//
+//                // Récupérer les informations de l'utilisateur ajouté pour confirmation
+//                $sql = "SELECT * FROM User WHERE ID = :userId";
+//                $stmt = $pdo->prepare($sql);
+//                $stmt->execute([':userId' => $userId]);
+//                $newUser = $stmt->fetch(PDO::FETCH_ASSOC);
+//
+//                // Vérifier si l'utilisateur a bien été récupéré
+//                if ($newUser) {
+//                    return $newUser; // Retourne les détails de l'utilisateur ajouté
+//                }
+//            }
+//
+//        } catch (PDOException $e) {
+//            // Gérer l'exception en cas d'erreur de base de données
+//            return ["error" => "Erreur lors de l'ajout de l'utilisateur : " . $e->getMessage()];
+//        }
+//    }
+
+    public function showProfile()
+    {
         try {
-            // Obtenir la connexion à la base de données
-            $pdo = getDBConnection();
+            // Créer une instance de la classe User
+            $user = new User();
 
-            // Préparer la requête SQL pour insérer un nouvel utilisateur
-            $sql = "INSERT INTO User (pseudo) VALUES (:pseudo)";
-            $stmt = $pdo->prepare($sql);
+            // Récupérer tous les pseudos
+            $usernameList = $user->getAllPseudo();
 
-            // Exécuter la requête avec le paramètre
-            $result = $stmt->execute([':pseudo' => $pseudo]);
-
-            // Vérifier si l'insertion a réussi
-            if ($result) {
-                // Récupérer l'ID de l'utilisateur ajouté
-                $userId = $pdo->lastInsertId();
-
-                // Récupérer les informations de l'utilisateur ajouté pour confirmation
-                $sql = "SELECT * FROM User WHERE ID = :userId";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([':userId' => $userId]);
-                $newUser = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // Vérifier si l'utilisateur a bien été récupéré
-                if ($newUser) {
-                    // Vous pouvez retourner les détails de l'utilisateur ou un message de succès
-                    return $newUser; // Retourne les détails de l'utilisateur ajouté
-                }
-            }
-
-            return false; // Indique que l'ajout a échoué
-        } catch (PDOException $e) {
-            throw new Exception("Failed to add user: " . $e->getMessage());
+            // Passer la liste des pseudos à la vue
+            require_once 'views/profile.php';
+        } catch (Exception $e) {
+            echo "Erreur : " . $e->getMessage();
         }
     }
 
@@ -146,8 +175,19 @@ class User
             // Obtenir la connexion à la base de données
             $pdo = getDBConnection();
 
-            // Utiliser un ID fixe pour l'utilisateur
-            $userId = 1; // Remplacez par l'ID que vous souhaitez utiliser
+            // Vérifier si le pseudo est déjà pris
+            $checkQuery = "SELECT COUNT(*) FROM User WHERE pseudo = :pseudo";
+            $stmt = $pdo->prepare($checkQuery);
+            $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+            $stmt->execute();
+
+            // Si le pseudo existe déjà, retourner une erreur
+            if ($stmt->fetchColumn() > 0) {
+                return ['error' => 'Ce pseudo est déjà pris.'];
+            }
+
+            // Utiliser un ID fixe pour l'utilisateur (ou remplacer par la session si disponible)
+            $userId = 1; // Remplacez par l'ID de l'utilisateur actuel
 
             // Préparer la requête SQL pour mettre à jour le pseudo
             $sql = "UPDATE User SET pseudo = :pseudo WHERE ID = :userId";
@@ -171,38 +211,37 @@ class User
         }
     }
 
-    public function getAllUsers() {
-        try {
-            // Obtenir la connexion à la base de données
-            $pdo = getDBConnection(); // Assurez-vous que cette fonction est définie quelque part
 
-            // Préparer la requête SQL pour obtenir tous les utilisateurs
-            $sql = "SELECT * FROM User"; // Remplacez 'User' par le nom de votre table d'utilisateurs
+    public function updatePassword($password) {
+        try {
+            // Obtenir la connexion à la base de données via getDBConnection()
+            $pdo = getDBConnection();  // Cette fonction retourne déjà la connexion PDO
+
+            // Hash du mot de passe avant de le stocker
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+            // Utiliser un ID fixe pour l'utilisateur (ou remplacer par la session si disponible)
+            $userId = $_SESSION['user_id'];  // Utilise l'ID de l'utilisateur connecté depuis la session
+
+            // Préparer la requête SQL pour mettre à jour le mot de passe
+            $sql = "UPDATE User SET password = :password WHERE ID = :userId";
             $stmt = $pdo->prepare($sql);
 
-            // Exécuter la requête
-            $stmt->execute();
-
-            // Récupérer tous les résultats
-            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $users; // Retourner la liste des utilisateurs
-        } catch (PDOException $e) {
-            throw new Exception("Failed to retrieve users: " . $e->getMessage());
-        }
-    }
-
-
-    public function updatePassword($passwordHash)
-    {
-        try {
-            $sql = "UPDATE User SET passwordHash = :passwordHash WHERE ID = :userId";
-            Database::queryAssoc($sql, [
-                ':userId' => $this->ID,
-                ':passwordHash' => $passwordHash
+            // Exécuter la requête avec les paramètres
+            $result = $stmt->execute([
+                ':userId' => $userId,
+                ':password' => $hashedPassword
             ]);
+
+            // Vérifier si la mise à jour a réussi
+            if ($result) {
+                $this->passwordHash = $hashedPassword;  // Mise à jour de l'attribut
+                return true; // Indiquer que la mise à jour a réussi
+            }
+
+            return ['error' => 'La mise à jour du mot de passe a échoué.'];
         } catch (PDOException $e) {
-            throw new Error("Failed to update password: " . $e->getMessage());
+            throw new Exception("Échec de la mise à jour du mot de passe : " . $e->getMessage());
         }
     }
 

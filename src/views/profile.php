@@ -258,6 +258,48 @@ $stmt->execute();
 // Récupérer les résultats sous forme de tableau
 $pseudoList = $stmt->fetchAll(PDO::FETCH_COLUMN); // Récupère seulement la colonne 'pseudo'
 ?>
+<?php
+//session_start();
+
+// Assurez-vous que l'utilisateur est bien connecté
+//if (!isset($_SESSION['user_id'])) {
+//    // Redirigez l'utilisateur vers la page de connexion ou une autre action appropriée
+//    exit("Vous devez être connecté pour envoyer une demande d'ami.");
+//}
+
+// Vérifiez si le formulaire a été soumis
+if (isset($_POST['send_request'])) {
+    // Récupérez les données
+    $sender_id = $_SESSION['user_id']; // L'ID de l'utilisateur connecté
+    $receiver_id = $_POST['receiver_id']; // L'ID du receveur de la demande
+
+    // Connexion à la base de données (assurez-vous de définir les bons paramètres)
+    $conn = new mysqli("localhost", "root", "", "votre_base_de_donnees");
+
+    // Vérifiez la connexion
+    if ($conn->connect_error) {
+        die("La connexion a échoué: " . $conn->connect_error);
+    }
+
+    // Préparez la requête d'insertion
+    $stmt = $conn->prepare("INSERT INTO FriendRequest (Status, IdReceiver, IdSender, CreatedAt) VALUES (?, ?, ?, ?)");
+    $status = 'pending'; // Statut initial de la demande (par exemple, "en attente")
+    $created_at = date("Y-m-d H:i:s"); // Date actuelle
+
+    $stmt->bind_param("siss", $status, $receiver_id, $sender_id, $created_at); // Paramètres à lier
+
+    // Exécutez la requête
+    if ($stmt->execute()) {
+        echo "Demande d'ami envoyée avec succès.";
+    } else {
+        echo "Erreur lors de l'envoi de la demande d'ami : " . $stmt->error;
+    }
+
+    // Fermez la connexion
+    $stmt->close();
+    $conn->close();
+}
+?>
 <div>
     <h3 class="bold mb-1">Rechercher un utilisateur</h3>
     <form name="searchUser" class="rounded-box flex flex-column gap-Z" autocomplete="off" aria-label="Formulaire de recherche d'utilisateur">
@@ -279,12 +321,51 @@ $pseudoList = $stmt->fetchAll(PDO::FETCH_COLUMN); // Récupère seulement la col
                     <option value="<?= htmlspecialchars($pseudo); ?>"></option>
                 <?php endforeach; ?>
             </datalist>
+            <!-- Bouton de validation -->
+            <button type="button" id="validateBtn" onclick="validatePseudo()">Valider le pseudo</button>
 
+            <!-- Affichage du pseudo validé -->
+            <div id="selectedPseudo" class="selected-pseudo" style="display: none;">
+                <p><strong>Pseudo sélectionné :</strong> <span id="pseudoDisplay"></span></p>
+
+                <!-- Ajouter les boutons (croix rouge et check vert) à droite du pseudo -->
+                <button type="button" id="validateBtn" class="btn-validate" onclick="sendFriendRequest()">✔</button>
+                <button type="button" id="cancelBtn" class="btn-cancel" onclick="cancelSelection()">❌</button>
+            </div>
             <ul id="autocompleteResults" class="autocomplete-results"></ul>
         </div>
     </form>
 </div>
+<script>
+    // Fonction pour valider et afficher le pseudo
+    function validatePseudo() {
+        var input = document.getElementById("searchUserInput");
+        var selectedPseudo = input.value.trim();
 
+        if (selectedPseudo) {
+            // Afficher le pseudo sélectionné sous le champ de saisie
+            document.getElementById("selectedPseudo").style.display = "block";
+            document.getElementById("pseudoDisplay").innerText = selectedPseudo;
+        } else {
+            // Si aucun pseudo n'est sélectionné, masquer l'affichage
+            document.getElementById("selectedPseudo").style.display = "none";
+        }
+    }
+
+    // Fonction d'autocomplétion (si nécessaire)
+    function autocompleteUser() {
+        // Vous pouvez ajouter votre logique d'autocomplétion ici
+    }
+    function cancelSelection() {
+        // Réinitialiser le champ de texte
+        document.getElementById("searchUserInput").value = '';
+
+        // Masquer la zone d'affichage du pseudo sélectionné
+        document.getElementById("selectedPseudo").style.display = "none";
+
+        // Supprimer toute autre logique si nécessaire
+    }
+</script>
 <!--<script>-->
 <!--    function autocompleteUser() {-->
 <!--        var input = document.getElementById('searchUserInput').value;-->

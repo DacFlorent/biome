@@ -6,9 +6,11 @@ $pseudos = [];
 
 if (isset($_SESSION['user_id'])) {
     // Récupérer le pseudo de l'utilisateur à partir de la session ou de la base de données
-    $pseudo = getUserPseudo($_SESSION['user_id']);
+    $pseudo = $_SESSION['user_id'];
+    $Points = $_SESSION['points'];
 } else {
     $pseudo = ''; // Valeur vide si non connecté
+    $Points = "0";
 }
 if (isset($_POST['fetch_pseudo'])) {
     // Récupérer tous les pseudos
@@ -146,8 +148,10 @@ if (isset($_POST['fetch_pseudo'])) {
 //    }
 //}
 ?>
+<h1>Bienvenue sur ta page de profil <?= $pseudo ?> </h1>
+<h2>Ton score est de : <?= $Points ?> </h2>
 
-<h3 class="bold">Update your pseudo</h3>
+<h3 class="bold">Mettre à jour ton pseudo</h3>
 <form action="" method="post" class="flex flex-column gap-2">
     <div class="rounded-box flex flex-column gap-2">
         <div class="flex flex-column">
@@ -168,7 +172,7 @@ if (isset($_POST['fetch_pseudo'])) {
     const pseudos = <?php echo json_encode($pseudos); ?>;
 </script>
 <div class="w-full flex flex-column gap-2">
-    <h3 class="bold">Update your password</h3>
+    <h3 class="bold">Mettre à jour ton mot de pass</h3>
     <form action="" method="post" class="flex flex-column gap-2">
         <div class="rounded-box flex flex-column gap-2">
             <div class="flex flex-column">
@@ -176,7 +180,7 @@ if (isset($_POST['fetch_pseudo'])) {
                 <input type="password" name="password" id="password" placeholder="New Password" class="input-form" aria-label="New Password">
             </div>
             <div class="flex flex-column">
-                <label for="confirmPassword" class="bold">Confirm password</label>
+                <label for="confirmPassword" class="bold">Confirme ton mot de pass</label>
                 <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="input-form" aria-label="Confirm Password">
             </div>
             <?php if (isset($notification) && $notification["title"] === "passwordUpdated"): ?>
@@ -226,10 +230,21 @@ if (isset($_POST['fetch_pseudo'])) {
 <!--        </ul>-->
 <!--    </div>-->
 <!--</div>-->
-<div class="badge-container">
-    <img src="../images/badge1.png" alt="Badge 1" class="badge" width="50" height="50">
-    <img src="../images/badge2.png" alt="Badge 2" class="badge" width="50" height="50">
-    <img src="../images/badge3.png" alt="Badge 3" class="badge" width="50" height="50">
+<div class="flex flex-row badge-container w-full">
+    <div>
+        <h4>Complete All</h4>
+        <img src="../images/badge3.png" alt="Badge 3" class="badge" width="50" height="50">
+    </div>
+    <div>
+        <h5>Complete theme</h5>
+        <img src="../images/badge1.png" alt="Badge 1" class="badge" width="50" height="50">
+    </div>
+    <div>
+        <h5>Complete chapters</h5>
+        <img src="../images/badge2.png" alt="Badge 2" class="badge" width="50" height="50">
+    </div>
+
+
 </div>
 <div>
     <h3 class="bold mb-1">Rechercher un utilisateur</h3>
@@ -247,9 +262,6 @@ if (isset($_POST['fetch_pseudo'])) {
 
             <!-- Liste déroulante dynamique des résultats -->
             <ul id="autocompleteResults" class="autocomplete-results"></ul>
-        </div>
-        <div class="flex justify-center">
-            <button type="submit" name="searchUser" class="submit-button mt-1" aria-label="Rechercher un utilisateur">Rechercher</button>
         </div>
     </form>
 </div>

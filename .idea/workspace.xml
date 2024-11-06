@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b95a4c9-2d05-4553-9f9b-b493647a1e08" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/images/badge1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/badge2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/badge3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/profile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/badge1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/badge1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/badge2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/badge2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/badge3.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/badge3.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/profile.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +92,7 @@
       <workItem from="1730807948422" duration="7097000" />
       <workItem from="1730876901445" duration="597000" />
       <workItem from="1730879102240" duration="6331000" />
-      <workItem from="1730885905645" duration="7052000" />
+      <workItem from="1730885905645" duration="11446000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />

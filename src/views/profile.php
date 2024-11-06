@@ -274,15 +274,15 @@ if (isset($_POST['send_request'])) {
     $receiver_id = $_POST['receiver_id']; // L'ID du receveur de la demande
 
     // Connexion à la base de données (assurez-vous de définir les bons paramètres)
-    $conn = new mysqli("localhost", "root", "", "votre_base_de_donnees");
+    $pdo = getDBConnection();
 
     // Vérifiez la connexion
-    if ($conn->connect_error) {
-        die("La connexion a échoué: " . $conn->connect_error);
+    if ($pdo->connect_error) {
+        die("La connexion a échoué: " . $pdo->connect_error);
     }
 
     // Préparez la requête d'insertion
-    $stmt = $conn->prepare("INSERT INTO FriendRequest (Status, IdReceiver, IdSender, CreatedAt) VALUES (?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO FriendRequest (Status, IdReceiver, IdSender, CreatedAt) VALUES (?, ?, ?, ?)");
     $status = 'pending'; // Statut initial de la demande (par exemple, "en attente")
     $created_at = date("Y-m-d H:i:s"); // Date actuelle
 
@@ -297,7 +297,7 @@ if (isset($_POST['send_request'])) {
 
     // Fermez la connexion
     $stmt->close();
-    $conn->close();
+    $pdo->close();
 }
 ?>
 <div>
